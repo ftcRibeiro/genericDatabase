@@ -11,7 +11,7 @@ import os
 import sys
 import datetime
 import signal
-from utilEnum import excptypes
+from utilities.constants import excptypes
 
 
 ##      CONFIGURAÇÃO DE ARQUIVO DE LOG       ##

@@ -1,7 +1,7 @@
 # encoding: utf-8
 import configparser
 import os.path
-from Utilidades import generalExceptionTreatment
+from utilities.exceptions import generalExceptionTreatment
 
 class ConfigFile:
 
@@ -52,6 +52,8 @@ class ConfigFile:
             config.read(self.__configName)
             return config[section][option]
         except KeyError as e:
-            generalExceptionTreatment(e, "Key not found in config file")  
+            generalExceptionTreatment(e, "Key not found in config file")
+            raise e
         except Exception as e:
             generalExceptionTreatment(e,"Failed to read config file")
+            raise e
