@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Example Launcher",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Example.py",
+            "console": "internalConsole",
+            "args": ["dev"]
+        }
+    ],
+    "compounds": []
+}

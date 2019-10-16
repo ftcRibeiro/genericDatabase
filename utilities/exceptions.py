@@ -6,7 +6,7 @@
 
 import logging
 from logging import handlers
-import GenConfigFile as conf
+import utilities.GenConfigFile as conf
 import os
 import sys
 import datetime

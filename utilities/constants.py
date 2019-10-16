@@ -1,8 +1,7 @@
 from enum import Enum
 
 class Profiles(Enum):
-    ftcr = "config/felipeRibeiro.ini"
-    vbbarros = "config/viniciusBarros.ini"
+    dev = "config/developerName.ini"
 
 class excptypes(Enum):
     criticalFailure = 0

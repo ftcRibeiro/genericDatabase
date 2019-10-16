@@ -3,11 +3,11 @@ from sqlalchemy import Column
 from sqlalchemy import types
 from sqlalchemy import Sequence
 
-class Kpi(Base):
-    __tablename__ = 'kpi'
+class Table1(Base):
+    __tablename__ = 'Table1'
     
-class BusinessKpi(Base):
-    __tablename__ = 'businesskpi'
+class Table2(Base):
+    __tablename__ = 'Table2'
 
 
 

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, aliased, Load, load_only
 from sqlalchemy import create_engine, func, union, distinct
 import pandas as pd
 import urllib
-import base
+from dependencies.base import Base
 import logging
 import datetime
 import inspect
@@ -17,8 +17,6 @@ from utilities.GenConfigFile import ConfigFile
 from utilities.exceptions import generalExceptionTreatment
 from utilities.constants import *
 
-
-##     BANCO DE DADOS     ##
 class DatabaseClass:
 
     def __init__(self, section, conf):
@@ -53,7 +51,7 @@ class DatabaseClass:
             conStr = "%s://%s:%s@%s/%s" %(self.driver, self.__username, self.__password, self.__ip, self.__instancename)
             self.__engine = create_engine(conStr)
 
-            base.Base.prepare(self.__engine, reflect=True)
+            Base.prepare(self.__engine, reflect=True)
             self.session = Session(self.__engine)
             return Status.initializing
             

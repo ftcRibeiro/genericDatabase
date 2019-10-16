@@ -6,7 +6,7 @@ from utilities.exceptions import generalExceptionTreatment
 class ConfigFile:
 
 
-    def __init__(self, configName = 'config.ini'):
+    def __init__(self, configName = 'config/config.ini'):
         self.__configName = configName
 
 
@@ -17,30 +17,13 @@ class ConfigFile:
 
             config = configparser.ConfigParser()
 
-            config['LOG'] = {}
-            config['LOG']['FileName'] = 'kpi-executor.log'
-            config['LOG']['Level'] = 'INFO'
-            config['LOG']['Format'] = "%(levelname)s: %(asctime)s %(message)s"
-            config['LOG']['MaxByte'] = '1024'
-            config['LOG']['BackupCount'] = '1'
-
-            config['DATABASE_DASHBOARD'] = {}
-            config['DATABASE_DASHBOARD']['IP'] = 'od1rkc5b0lergt8.csydych85aop.us-east-1.rds.amazonaws.com'
-            config['DATABASE_DASHBOARD']['Port'] = '5432'
-            config['DATABASE_DASHBOARD']['InstanceName'] = 'omo-db'
-            config['DATABASE_DASHBOARD']['UserName'] = 'master'
-            config['DATABASE_DASHBOARD']['Password'] = 'wjmDEH69WEF6KV4B'
-            config['DATABASE_DASHBOARD']['ConnStr'] = "DRIVER={SQL Server};SERVER={serverDB};DATABASE={instancename};UID={username};PWD={password}"
-            config['DATABASE_DASHBOARD']['reconnecTimeDelay'] = '20'
-
-            config['DATABASE_KPI'] = {}
-            config['DATABASE_KPI']['IP'] = '10.1.8.16'
-            config['DATABASE_KPI']['Port'] = '1433'
-            config['DATABASE_KPI']['InstanceName'] = 'omokpi'
-            config['DATABASE_KPI']['UserName'] = 'master'
-            config['DATABASE_KPI']['Password'] = 'wjmDEH69WEF6KV4B'
-            config['DATABASE_KPI']['ConnStr'] = "DRIVER={SQL Server};SERVER={serverDB};DATABASE={instancename};UID={username};PWD={password}"
-            config['DATABASE_KPI']['reconnecTimeDelay'] = '20'
+            config['CONFIG_SECTION'] = {}
+            config['CONFIG_SECTION']['IP'] = 'xxx.xxx.xxx.xxx'
+            config['CONFIG_SECTION']['Port'] = 'xxxx'
+            config['CONFIG_SECTION']['InstanceName'] = 'dbName'
+            config['CONFIG_SECTION']['UserName'] = 'userName'
+            config['CONFIG_SECTION']['Password'] = 'userPassword'
+            config['CONFIG_SECTION']['reconnecTimeDelay'] = 'x'
 
             with open(self.__configName, 'w') as configfile:
                     config.write(configfile)
