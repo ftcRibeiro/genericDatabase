@@ -2,8 +2,25 @@ from searches.Search import *
 from domain.Entities import *
 
 class ValuesSearch(Search):
+    """ Queries to read and write in Values table
+
+    Methods
+    -------
+
+    getAllByTable1Name(tagName)
+
+        Get all values by table1Name
+
+    """
 
     def getAllByTable1Name(self, tagName):
+        """ Find values by name
+        Parameters
+        ----------
+            tagName: Tag name from table1
+
+        """
+
         try:
             q = self.session.query(Values.value.label('Values'), Table1.name.label('Tag'), Values.timestamp.label('Timestamp')) \
                 .select_from(Values) \

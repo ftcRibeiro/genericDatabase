@@ -9,6 +9,7 @@ class excptypes(Enum):
 class Status(Enum):
     initializing = 0
     dbConnFailed = 1
+    dbCreateFailed = 2
 
 class DbDriverType(Enum):
     postgresql = "postgresql"

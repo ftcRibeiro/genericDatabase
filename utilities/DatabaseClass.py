@@ -16,10 +16,25 @@ import time
 from utilities.GenConfigFile import ConfigFile
 from utilities.exceptions import generalExceptionTreatment
 from utilities.constants import *
-
+from sqlalchemy.ext.declarative import declarative_base
 class DatabaseClass:
+    """ Generic class for instantiating a python database, regardless of database provider
+    Methods 
+    -------
+        connectDb(newDatabase = False)
+            Connect to a database according to the configuration file used.
 
+    """
+    
     def __init__(self, section, conf):
+
+        """
+        Parameters
+        ----------
+            section: section of .ini configuration archive
+            conf: name of .ini configuration archive
+
+        """
 
         try:
             self.__conf = conf
@@ -34,7 +49,15 @@ class DatabaseClass:
         except Exception as e:
             generalExceptionTreatment(e,"Failed to create Database object")
 
-    def connectDb(self):
+    def connectDb(self,newDatabase = False):
+
+        """ Connect to a database according to the configuration file used. 
+        Parameters
+        ----------
+            newDatabase == false -> Existing Database Reflection
+            newDatabase == true -> Creating schema according Base derivated class on project 
+
+        """
         try:
             if(self.__driver == DbDriverType.postgresql.name):
                 self.driver = DbDriverType.postgresql.value
@@ -47,11 +70,17 @@ class DatabaseClass:
 
             elif(self.__driver == DbDriverType.sqlserver.name):
                 self.driver = DbDriverType.sqlserver.value
-                
-            conStr = "%s://%s:%s@%s/%s" %(self.driver, self.__username, self.__password, self.__ip, self.__instancename)
-            self.__engine = create_engine(conStr)
 
-            Base.prepare(self.__engine, reflect=True)
+            conStr = "%s://%s:%s@%s/%s" %(self.driver, self.__username, self.__password, self.__ip, self.__instancename)
+
+            if newDatabase:
+                Base = declarative_base()
+                self.__engine = create_engine(conStr)
+                Base.metadata.create_all(self.__engine)
+            else:
+                self.__engine = create_engine(conStr)
+                Base.prepare(self.__engine, reflect=True)
+            
             self.session = Session(self.__engine)
             return Status.initializing
             
@@ -59,7 +88,12 @@ class DatabaseClass:
             generalExceptionTreatment(e,"Failed to connect to Database")
             return Status.dbConnFailed
             
+    
     def closeSession(self):
+        """ Discconect and cloese session of that database instance
+  
+        """
+
         try:
             self.session.close_all()
         except Exception as e:
