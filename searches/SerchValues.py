@@ -12,7 +12,9 @@ class ValuesSearch(Search):
         Get all values by table1Name
 
     """
-
+    def __init__(self, db):
+        super().__init__(db)
+        
     def getAllByTable1Name(self, tagName):
         """ Find values by name
         Parameters
@@ -32,19 +34,6 @@ class ValuesSearch(Search):
             generalExceptionTreatment(e, "Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
             raise e
 
-    def setItem(self, dataDf):
-        try:
-            __timestamp = int(time.time())
-
-            for i in range(0, len(dataDf)):  # apagar - remover a /2
-                NAME = dataDf.at[i, 'name']                
-                TABLE2_ID = str(dataDf.at[i, 'table2_id'])
-                                
-                q = Table1( insert_date=__timestamp,
-                                name=NAME, table2_id=TABLE2_ID)
-                
-                self.session.add(q)
-                self.session.commit()
-            
-        except Exception as e:
-            generalExceptionTreatment(e, "Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
+    def setData(self, dataDf):
+        return super().setData(dataDf)
+        

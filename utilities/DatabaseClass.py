@@ -17,6 +17,7 @@ from utilities.GenConfigFile import ConfigFile
 from utilities.exceptions import generalExceptionTreatment
 from utilities.constants import *
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy_utils import database_exists, create_database
 class DatabaseClass:
     """ Generic class for instantiating a python database, regardless of database provider
     Methods 
@@ -72,14 +73,16 @@ class DatabaseClass:
                 self.driver = DbDriverType.sqlserver.value
 
             conStr = "%s://%s:%s@%s/%s" %(self.driver, self.__username, self.__password, self.__ip, self.__instancename)
+            self.__engine = create_engine(conStr)
+            if not database_exists(self.__engine.url):
+                create_database(self.__engine.url)
+            else:
+                pass
 
             if newDatabase:
-                Base = declarative_base()
-                self.__engine = create_engine(conStr)
                 Base.metadata.create_all(self.__engine)
-            else:
-                self.__engine = create_engine(conStr)
-                Base.prepare(self.__engine, reflect=True)
+
+            Base.prepare(self.__engine, reflect=True)
             
             self.session = Session(self.__engine)
             return Status.initializing
@@ -99,6 +102,3 @@ class DatabaseClass:
         except Exception as e:
             generalExceptionTreatment(e, "Failed to connect to Database")
             raise e
-           
-
-   

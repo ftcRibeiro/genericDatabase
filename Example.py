@@ -4,13 +4,14 @@ from utilities.DatabaseClass import *
 from utilities.exceptions import *
 from utilities.GenConfigFile import ConfigFile
 # from searches.SearchTable1 import *
-from searches import SearchTable1
+from searches import SearchTable2
 from searches import SerchValues
 
 parameters = sys.argv[1:]
 profile = parameters[0]
 conf = ConfigFile(Profiles[profile].value)
 table2Id = 1
+instData = pd.DataFrame({'name': ['Bernardo', 'Felipe', 'Fred', 'Gustavo', 'Vinicius'] })
 
 try:
     db = DatabaseClass('CONFIG_SECTION',conf)
@@ -21,14 +22,17 @@ except Exception as eDb:
 try:
     if (isinstance(db, DatabaseClass)):
         
-        kpiExec = db.connectDb()
-        repo = SearchTable1.Table1Search(db)
-        data = repo.getAllTable1ByTable2Id(table2Id)
+        kpiExec = db.connectDb(newDatabase=True)
+        repo = SearchTable2.Table2Search(db)
 
         repo2 = SerchValues.ValuesSearch(db)
-        print(data)
+        repo.setData(instData)
+
+        print(instData)
 
         db.closeSession()
 
-except Exception as e:
+    
+
+except Exception as e:  
     exceptionTreatment(e) 

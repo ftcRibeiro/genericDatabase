@@ -32,3 +32,24 @@ class Search():
         except Exception as e:
             generalExceptionTreatment(e,"Failed to execute query :: {0} :: SQL = {1}".format(inspect.stack()[1][3], q))
             raise e
+
+    def setData(self, dataDf):
+        """ Write the data set :dataDf: in a table
+        Parameters
+        ----------
+            dataDf: dataframe pandas with all data to insert in a table. This dataframe must have the same table column names
+
+        """
+        try:
+            __timestamp = int(time.time())
+            dataDict = dataDf.to_dict('index')
+            q = []
+            
+            for i in range(1,len(dataDict)):
+                q[i] = self(dataDict[i])
+            self.add_all(q)
+            self.commit()
+            self.flush()
+
+        except Exception as e:
+            generalExceptionTreatment(e, "Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
