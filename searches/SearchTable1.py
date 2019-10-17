@@ -26,3 +26,4 @@ class Table1Search(Search):
         except Exception as e:
             generalExceptionTreatment(e,"Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
             raise e
+    

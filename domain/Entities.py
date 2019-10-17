@@ -9,6 +9,8 @@ class Table1(Base):
 class Table2(Base):
     __tablename__ = 'Table2'
 
+class Values(Base):
+    __tablename__ = 'Values'
 
 
 
