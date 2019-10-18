@@ -11,15 +11,26 @@ from utilities.exceptions import *
 # Autor: Felipe Ribeiro - IHM Stefanini
 
 class Search():
+    """ Base class to represent relational database queries
+ 
 
+
+        Methods
+        -------
+            getAll(self, table)
+                Get all values by table
+            setData(self, dataDf, table)
+                Set a dataframe data into a database table
+            returnQuery(self, q, checkNone=False)
+                Query Return Transformation for Pandas Object 
+
+    """
     def __init__(self, db):
         try:
             self.session = db.session
 
         except Exception as e:
             raise e
-
-#Método para tradução de objeto de retorno de pesquisa para objeto pandas
 
     def returnQuery(self, q, checkNone = False):
         try:
@@ -33,23 +44,38 @@ class Search():
             generalExceptionTreatment(e,"Failed to execute query :: {0} :: SQL = {1}".format(inspect.stack()[1][3], q))
             raise e
 
-    def setData(self, dataDf):
-        """ Write the data set :dataDf: in a table
+    def getAll(self, table):
+        """ Get all values by table
+        Parameters
+        ----------
+            table: name of entity representing table to query
+        """
+        try:
+            q = self.session.query(table)
+            return self.returnQuery(q)
+
+        except Exception as e:
+            raise e
+            generalExceptionTreatment(e,"Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
+
+    def setData(self, dataDf, table):
+        """ Set a dataframe data into a database table
         Parameters
         ----------
             dataDf: dataframe pandas with all data to insert in a table. This dataframe must have the same table column names
-
+            table: name of entity representing table to be changed
         """
         try:
             __timestamp = int(time.time())
             dataDict = dataDf.to_dict('index')
-            q = []
+            n = len(dataDict)
+            q = [0]*n
             
-            for i in range(1,len(dataDict)):
-                q[i] = self(dataDict[i])
-            self.add_all(q)
-            self.commit()
-            self.flush()
+            for i in range(0,n):
+                q[i] = table(**dataDict[i])
+            self.session.add_all(q)
+            self.session.commit()
+            self.session.flush()
 
         except Exception as e:
             generalExceptionTreatment(e, "Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))

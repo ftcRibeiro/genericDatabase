@@ -6,14 +6,20 @@ class ValuesSearch(Search):
 
     Methods
     -------
-
-    getAllByTable1Name(tagName)
-
-        Get all values by table1Name
+        getAll(self)
+        setData(self, dataDf)
+        getAllByTable1Name(tagName)
+            Get all values by table1Name
 
     """
     def __init__(self, db):
         super().__init__(db)
+
+    def getAll(self):
+        return super().getAll(Values)
+
+    def setData(self, dataDf):
+        return super().setData(dataDf)
         
     def getAllByTable1Name(self, tagName):
         """ Find values by name
@@ -33,7 +39,3 @@ class ValuesSearch(Search):
         except Exception as e:
             generalExceptionTreatment(e, "Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
             raise e
-
-    def setData(self, dataDf):
-        return super().setData(dataDf)
-        

@@ -20,15 +20,18 @@ except Exception as eDb:
     exceptionTreatment(eDb)
 
 try:
+    data = instData.to_dict('index')
     if (isinstance(db, DatabaseClass)):
         
         kpiExec = db.connectDb(newDatabase=True)
+
         repo = SearchTable2.Table2Search(db)
 
         repo2 = SerchValues.ValuesSearch(db)
+        
         repo.setData(instData)
 
-        print(instData)
+        print(repo.getAll())
 
         db.closeSession()
 
