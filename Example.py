@@ -3,28 +3,39 @@ from utilities.constants import *
 from utilities.DatabaseClass import *
 from utilities.exceptions import *
 from utilities.GenConfigFile import ConfigFile
-from searches.SearchTable1 import *
+# from searches.SearchTable1 import *
+from searches import SearchTable2
+from searches import SerchValues
 
 parameters = sys.argv[1:]
 profile = parameters[0]
 conf = ConfigFile(Profiles[profile].value)
 table2Id = 1
+instData = pd.DataFrame({'name': ['Bernardo', 'Felipe', 'Fred', 'Gustavo', 'Vinicius'] })
 
 try:
     db = DatabaseClass('CONFIG_SECTION',conf)
-    # dbKpi = DatabaseClass('DATABASE_KPI', conf)
+
 except Exception as eDb:
     exceptionTreatment(eDb)
 
 try:
+    data = instData.to_dict('index')
     if (isinstance(db, DatabaseClass)):
         
-        kpiExec = db.connectDb()
-        repo = Table1Search(db)
-        data = repo.getAllTable1ByTable2Id(table2Id)
-        print(data)
+        kpiExec = db.connectDb(newDatabase=True)
+
+        repo = SearchTable2.Table2Search(db)
+
+        repo2 = SerchValues.ValuesSearch(db)
+        
+        repo.setData(instData)
+
+        print(repo.getAll())
 
         db.closeSession()
 
-except Exception as e:
-    exceptionTreatment(e)
+    
+
+except Exception as e:  
+    exceptionTreatment(e) 

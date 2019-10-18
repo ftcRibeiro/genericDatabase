@@ -6,14 +6,11 @@ class Table1Search(Search):
     def __init__(self, db):
         super().__init__(db)
 
-    def getAllTable1(self):
-        try:
-            q = self.session.query(Table1)
-            return self.returnQuery(q)
+    def getAll(self):
+        return super().getAll(Table1)
 
-        except Exception as e:
-            raise e
-            generalExceptionTreatment(e,"Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
+    def setData(self, dataDf):
+        return super().setData(dataDf,Table1)
     
     def getAllTable1ByTable2Id(self, table2Id):
         try:
@@ -26,3 +23,5 @@ class Table1Search(Search):
         except Exception as e:
             generalExceptionTreatment(e,"Couldn't initiate the query :: {0}".format(inspect.stack()[0][3]))
             raise e
+
+    
